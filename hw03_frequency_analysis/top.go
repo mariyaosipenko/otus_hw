@@ -31,5 +31,12 @@ func Top10(str string) []string {
 		return wordFrequency[keys[i]] > wordFrequency[keys[j]]
 	})
 
-	return keys[:10]
+	var cut int
+	if len(keys) < 10 {
+		cut = len(keys)
+	} else {
+		cut = 10
+	}
+
+	return keys[:cut]
 }
