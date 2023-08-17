@@ -11,7 +11,7 @@ func Top10(str string) []string {
 		return nil
 	}
 
-	wordFrequency := make(map[string]int, len(w))
+	wordFrequency := make(map[string]int)
 	for _, v := range w {
 		pv := strings.ToLower(strings.Trim(v, "!¡,.'-"))
 		if len(pv) > 0 {
