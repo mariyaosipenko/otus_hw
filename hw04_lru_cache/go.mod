@@ -1,8 +1,11 @@
-module github.com/fixme_my_friend/hw04_lru_cache
+module github.com/mariyaosipenko/otus_hw/hw04_lru_cache
 
 go 1.19
 
-require github.com/stretchr/testify v1.7.0
+require (
+	github.com/stretchr/testify v1.7.0
+	golang.org/x/exp v0.0.0-20230811145659-89c5cff77bcb
+)
 
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
