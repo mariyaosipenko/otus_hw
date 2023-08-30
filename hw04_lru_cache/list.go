@@ -1,9 +1,5 @@
 package hw04lrucache
 
-import (
-	"golang.org/x/exp/slices"
-)
-
 type List interface {
 	Len() int
 	Front() *ListItem
@@ -21,13 +17,13 @@ type ListItem struct {
 }
 
 type list struct {
-	allItem   []*ListItem
+	countList int
 	frontItem *ListItem
 	backItem  *ListItem
 }
 
 func (l *list) Len() int {
-	return len(l.allItem)
+	return l.countList
 }
 
 func (l *list) Front() *ListItem {
@@ -48,7 +44,7 @@ func (l *list) PushFront(v interface{}) *ListItem {
 		l.backItem = &n
 	}
 	l.frontItem = &n
-	l.allItem = append(l.allItem, &n)
+	l.countList++
 	return &n
 }
 
@@ -62,30 +58,31 @@ func (l *list) PushBack(v interface{}) *ListItem {
 		l.frontItem = &b
 	}
 	l.backItem = &b
-	l.allItem = append(l.allItem, &b)
+	l.countList++
 	return &b
 }
 
 func (l *list) Remove(i *ListItem) {
-	index := slices.IndexFunc(l.allItem, func(c *ListItem) bool { return i == c })
-	elm := l.allItem[index]
-	if elm.Prev != nil && elm.Next != nil {
-		elm.Prev.Next = elm.Next
-		elm.Next.Prev = elm.Prev
-	}
-	if elm.Prev != nil && elm.Next == nil {
-		elm.Prev.Next = nil
-	}
-	if elm.Prev == nil && elm.Next != nil {
-		elm.Next.Prev = nil
+	if i.Prev != nil && i.Next != nil {
+		if i.Prev.Next != i || i.Next.Prev != i {
+			return
+		}
+		i.Prev.Next = i.Next
+		i.Next.Prev = i.Prev
 	}
 	if l.backItem == i {
+		if i.Prev != nil {
+			i.Prev.Next = nil
+		}
 		l.backItem = l.backItem.Prev
 	}
 	if l.frontItem == i {
+		if i.Next != nil {
+			i.Next.Prev = nil
+		}
 		l.frontItem = l.frontItem.Next
 	}
-	l.allItem = append(l.allItem[:index], l.allItem[index+1:]...)
+	l.countList--
 }
 
 func (l *list) MoveToFront(i *ListItem) {
