@@ -22,10 +22,10 @@ func Unpack(input string) (string, error) {
 		return "", ErrInvalidString
 	}
 
-	// если последний символ слэш, то это ошибка
-	if inputRune[len(inputRune)-1] == 92 {
-		return "", ErrInvalidString
-	}
+	//// если последний символ слэш, то это ошибка
+	//if inputRune[len(inputRune)-1] == 92 {
+	//	return "", ErrInvalidString
+	//}
 
 	var i int
 	for i = 0; i < len(inputRune)-1; i++ {
@@ -67,6 +67,9 @@ func Unpack(input string) (string, error) {
 
 	// последний символ просто дописываем в итоговую строку
 	if i == len(inputRune)-1 {
+		if inputRune[i] == 92 {
+			return "", ErrInvalidString
+		}
 		resultString.WriteRune(inputRune[i])
 		return resultString.String(), nil
 	}
