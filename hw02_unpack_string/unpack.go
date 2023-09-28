@@ -22,11 +22,6 @@ func Unpack(input string) (string, error) {
 		return "", ErrInvalidString
 	}
 
-	//// если последний символ слэш, то это ошибка
-	//if inputRune[len(inputRune)-1] == 92 {
-	//	return "", ErrInvalidString
-	//}
-
 	var i int
 	for i = 0; i < len(inputRune)-1; i++ {
 		var simvol string
@@ -41,14 +36,13 @@ func Unpack(input string) (string, error) {
 				return "", ErrInvalidString
 			}
 			// берем следующие символы
-			simvol = string(inputRune[i+1])
 			i++
+			// после сдвига каретки еще раз смотрим есть ли дальше цифра
 			if i < len(inputRune)-1 {
 				nextRuneAsNumber, errNext = strconv.Atoi(string(inputRune[i+1]))
 			}
-		} else {
-			simvol = string(inputRune[i])
 		}
+		simvol = string(inputRune[i])
 
 		// следующий символ цифра
 		if errNext == nil && i < len(inputRune)-1 {
@@ -67,11 +61,10 @@ func Unpack(input string) (string, error) {
 
 	// последний символ просто дописываем в итоговую строку
 	if i == len(inputRune)-1 {
-		if inputRune[i] == 92 {
+		if inputRune[len(inputRune)-1] == 92 {
 			return "", ErrInvalidString
 		}
-		resultString.WriteRune(inputRune[i])
-		return resultString.String(), nil
+		resultString.WriteRune(inputRune[len(inputRune)-1])
 	}
 
 	return resultString.String(), nil
